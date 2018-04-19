@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/swiper.min.css">
+  <link rel="stylesheet" href="/static/css/content.css">
+  <link rel="stylesheet" href="/static/css/jcolor.min.css">
+  <link rel="stylesheet" href="/static/css/ruler.css">
+  <link rel="stylesheet" href="/static/css/slide.css">
+  <link rel="stylesheet" href="/static/css/loadding.css">
+
+  <script type="text/javascript" src="/static/js/swiper.min.js"></script>
+  <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+  <script type="text/javascript" src="/static/js/djangoAjax.js"></script>
+  <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+  
+  <script type="text/javascript" src="/static/js/popover.js"></script>
+  <script type="text/javascript" src="/static/js/e-smart-zoom-jquery.min.js"></script>  <!--图片的放大与缩小 暂时没用到 -->
+  <script type="text/javascript" src="/static/js/jcolor.min.js"></script>
+  <script type="text/javascript" src="/static/js/jcanvas.min.js"></script><!-- 图形绘制 -->
+  <title>在线评片</title>
+</head>
+<body>
+	
+	<!-- loadding -->
+	<div id="loadding">
+      <div class="loader">
+      	<div class="k-line2 k-line12-1" ></div>
+		<div class="k-line2 k-line12-2" ></div>
+		<div class="k-line2 k-line12-3" ></div>
+		<div class="k-line2 k-line12-4" ></div>
+		<div class="k-line2 k-line12-5" ></div>
+		<div class="k-line2 k-line12-6" ></div>
+		<div class="k-line2 k-line12-7" ></div>
+		<div class="k-line2 k-line12-8" ></div>
+      </div>
+      <div class="loader-text">
+        loadding ... 
+      </div>
+    </div>
+    <div style="position: fixed;top: 10px;right: 0;z-index: 100">
+    	<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">
+	 	?
+		</button>
+		
+    </div>
+	<!-- content -->
+	<div class="swiper-container" id="mainSwiper">
+		<div id="Noswiping" class="swiper-wrapper">
+			<div class="swiper-slide menu" style="max-width: 400px;">
+				<div class="swiper-slide content">
+					<div class="menu-button">
+						<div class="bar"></div>
+						<div class="bar"></div>
+						<div class="bar"></div>
+					</div>
+					<div class="swiper-container" id="swiperSlide">
+						<div class="swiper-wrapper" id="swiperImg">
+							<div class="swiper-slide">
+								<a href="#"><img id="1" src="/static/image/original/T101-B6-H6-32R1.png" ></a>
+							</div>
+							<div class="swiper-slide">
+								<a href="#"><img id="2" src="/static/image/original/T101-B6-H6-33R1.png" ></a>
+							</div>
+							<div class="swiper-slide">
+								<a href="#"><img id="3" src="/static/image/original/T101-B7-H13-6R1.png" ></a>
+							</div>
+							<div class="swiper-slide">
+								<a href="#"><img id="4" src="/static/image/original/T101-B7-H13-12R1.png" ></a>
+							</div>
+							<div class="swiper-slide">
+								<a href="#"><img id="5" src="/static/image/original/T101-B8-H6-25R1.png" ></a>
+							</div>
+						</div>
+						<!-- Add Pagination -->
+						<div class="swiper-button-prev prev"></div>
+						<div class="swiper-button-next next"></div>
+					</div>
+				</div>
+			</div>
+			<div class="swiper-slide content" style="background: url(/static/image/background.jpg) repeat center top/100% auto;overflow-y: auto;overflow-x: auto;">
+				<div id="LRnavigation" style="background: url(/static/image/background.jpg) repeat center top/100% auto;">
+					<div class="modelTwo row" style="position: relative; margin-right: 0;margin-left: 0">
+						<div class="" style="min-width:900px">
+						  <!-- 模块二按钮 -->
+							<div class="MTtop" class="col-md-12 col-xs-12 col-sm-12">
+								<ul id="deal">
+									<li data-content="移动" data-placement="top" data-toggle="popover"><img src="/static/image/icon/move.ico"></li>
+									<li data-content="放大" data-placement="top" data-toggle="popover"><img src="/static/image/icon/enlarge.ico"></li>
+									<li style="display: none" data-content="缩小" data-placement="top" data-toggle="popover"><img src="/static/image/icon/narrow.ico"></li>
+									<li data-content="还原" data-placement="top" data-toggle="popover"><img src="/static/image/icon/restore.ico"></li>
+									<li data-content="颜色选择" data-placement="top" data-toggle="popover"><img src="/static/image/icon/getColor.ico"></li>
+									<li data-content="矩形标记" data-placement="top" data-toggle="popover"><img src="/static/image/icon/RectangleFlag.ico"></li>
+									<li data-content="圆形/椭圆标记" data-placement="top" data-toggle="popover"><img src="/static/image/icon/circulorFlag.ico"></li>
+									<li data-content="放大镜" data-placement="top" data-toggle="popover"><img src="/static/image/icon/magnifier.ico"></li>
+									<li data-content="标尺" data-placement="top" data-toggle="popover" class="dropdown"><img src="/static/image/icon/horizontalRuler.ico">
+										<div class="dropdown-content">
+											<button class="btn">标尺测量</button>
+											<button class="btn">画线测量</button>
+										</div>
+									</li>
+									<!--<li data-content="纵向标尺" data-placement="top" data-toggle="popover"><img src="img/icon/verticalScale.ico"></li>-->
+									<li data-content="色阶处理" data-placement="top" data-toggle="popover"><img src="/static/image/icon/colorLevel.ico"></li>
+									<li data-content="黑度测试" data-placement="top" data-toggle="popover"><img src="/static/image/icon/blackTest.ico"></li>
+									<li data-content="评定框" data-placement="top" data-toggle="popover"><img src="/static/image/icon/评定框.ico"></li>
+									<li data-content="综合评定框" data-placement="top" data-toggle="popover"><img src="/static/image/icon/综合评定框.ico"></li>
+									<!--<li data-content="保存" data-placement="top" data-toggle="popover">保存</li>-->
+									<!-- 颜色选择 -->
+									<li>
+										<article class="zeroconf" style="margin: 3px auto; display: none;">
+										  <section>
+											<div class="my-color-picker" style="color: skyblue"></div>
+											<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';"></div>
+										  </section>
+										</article>
+									</li>
+									<li>
+										<div id="painterDeal">
+											<button class="btn btn-default">移动</button>
+											<button class="btn btn-default">清除</button>
+										</div>
+									</li>
+								</ul>
+							</div>
+							
+							<!-- 模块二图片显示区域 -->
+							<div id="ruler" class="MTcontent col-md-12 col-xs-12 col-sm-12">
+								<span id="distance"></span>
+								<div id="smallImgWarp" style="margin-top:20px;width:900px;">
+									<img  id="mygod" width=900px class="old" src="/static/image/original/T101-B6-H6-32R1.png"/>
+									<canvas width=900px id="MTcontent" class="old"></canvas><!-- 这个canvas是用来绘制图形的 -->
+									<canvas id="tempCanvas" style="display:none"></canvas><!-- 这个canvas是用来图片处理时借用得的 -->
+									<div id="assess" style="position: absolute; display: none; top: 20px; left:20px;z-index: 300; width: 30px; height: 30px; border: 1px solid rgba(255,255,255,1)"></div><!-- 评定框 -->
+									<div id="lay"></div>
+									<div id="assessTwo" style="display: none;z-index: 300; width: 60px; height: 30px; position: absolute; border: 1px solid rgba(255,255,255,1); top: 20px; left: 20px">
+										<p style="width: 50%; height: 100%; border-right: 1px solid rgba(255,255,255,1)"></p>
+									</div><!-- 综合评定框 -->
+								</div>
+								<!--<img class="old" draggable="false" id="MTcontent" src="img/1124YL\T307\test/1.jpg" > -->
+							</div>
+						</div>
+
+						<div class="MTcontentRight">
+							<!-- 可拖拽区域 -->
+							<div id="drag">
+								<a class="closeColorDeal"></a>
+								<div class="item_container">
+									<div class="item_content">
+										<div id="integerDeal">
+											<span>整体处理</span>
+											<div>
+												<ul>
+													<li>
+														<div class="item">
+															<button class="btn btn-default">黑白效果</button>
+														</div>
+													</li>
+													
+													<li>
+														<div class="item">
+															<button class="btn btn-default">黑白效果2</button>
+														</div>
+													</li>
+													
+													<li>
+														<div class="item">
+															<button class="btn btn-default">泛黄色</button>
+														</div>
+													</li>
+													
+													<li>
+														<div class="item">
+															<button class="btn btn-default">反色1</button>
+														</div>
+													</li>
+													
+													
+													<li>
+														<div class="item">
+															<button class="btn btn-default">反色2</button>
+														</div>
+													</li>
+													
+													
+													<li>
+														<div class="item">
+															<button class="btn btn-default">Brightness +1</button>
+														</div>
+													</li>
+													
+													
+													<li>
+														<div class="item">
+															<button class="btn btn-default">Brightness -1</button>
+														</div>
+													</li>
+													
+													<li>
+														<div class="item">
+															<button class="btn btn-default">Contrast +1</button>
+														</div>
+													</li>
+													
+													<li>
+														<div class="item">
+															<button class="btn btn-default">Contrast -1</button>
+														</div>
+													</li>
+													<li>
+														<div class="item">
+															<button class="btn btn-default"> 还原</button>
+														</div>
+													</li>	
+												</ul>
+											</div>
+										</div>
+										<div id="partDeal">
+											<span>局部处理</span>
+											<ul>
+												<li class="item">
+													<button class="btn btn-default">Contrast +5</button>
+												</li>
+
+												<li class="item">
+													<button class="btn btn-default">Contrast -5</button>
+												</li>
+
+												<li class="item">
+													<button class="btn btn-default">Brightness +1</button>
+												</li>
+												<li class="item">
+													<button class="btn btn-default">Brightness -1</button>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							  </div>
+						
+							<div id="bigImg">
+								<img src="/static/image/original/T101-B6-H6-32R1.png">
+							</div>
+						</div>
+					 </div>
+						
+					<div class="Message container-fuild">
+						<form action="">
+						  <table id="tableNews" class="table table-bordered table-condensed text-center">
+							<tr>
+							  <th><span>文字信息</span></th>
+                              <th class="loaddingContent">
+                              	<div id="loaddingText" class="loaddingText">
+									<div class='loaderText loader1'>
+									  <div>
+									    <div>
+									      <div>
+									        <div>
+									          <div>
+									            <div></div>
+									          </div>
+									        </div>
+									      </div>
+									    </div>
+									  </div>
+									</div>
+							    </div>
+                              	<input class="form-control" id="textrRecognition" disabled type="text"/>
+                              </th>
+							  <th><span>黑度范围：</span></th>
+							  <th><input type="text" class="form-control input-sm" id="blackness" name=""></th>
+							</tr>
+							<tr>
+							  <th><span>缺陷编号：</span></th>
+							  <th><input type="text" class="form-control input-sm" name=""></th>
+							  <th><span>缺陷性质：</span></th>
+							  <th><input type="text" class="form-control input-sm" name=""></th>
+							  <th><span>缺陷位置：</span></th>
+							  <th><input type="text" class="form-control input-sm"  name=""></th>
+							  <th><span>缺陷定量</span></th>
+							  <th><input type="text" class="form-control input-sm"  name=""></th>
+							</tr>
+						  </table>
+						  <!--<img  id="myimgDemo" width=900px src="img/1124YL/T307/test/1.jpg"/>-->
+						  <div class="row" style="margin-right:0;">
+							<div style="height: 40px; position: relative;overflow: hidden;">
+								<span id="addSpan">+</span>
+							</div>
+						  </div>
+						  <div class="row" style="margin-right:0;">
+							<div class="col-md-1 col-md-offset-11">
+								<button id="submit" type="button" class="btn btn-default">Submit</button>
+							</div>
+						  </div>
+						</form>
+					</div>
+				</div>
+				
+  
+			</div>
+		</div>
+	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">提示：</h4>
+	      </div>
+	      <div class="modal-body">
+	        	  浏览器尽量不要进行缩放，这可能会带来一些布局上的问题！<hr>
+	        	  还有某些bug未修复<hr>
+	        	  有问题请尽快反馈
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+  <!-- 模块二处理事件js文件 -->
+  <script type="text/javascript" src="/static/js/loadding.js"></script>
+  <script type="text/javascript" src="/static/js/PageRuler.js"></script><!-- 标尺 -->
+  <script type="text/javascript" src="/static/js/painer.js"></script><!-- 绘制图形 -->
+  <script type="text/javascript" src="/static/js/Chobi.js"></script><!-- 图片处理 -->
+  <script type="text/javascript" src="/static/js/modelTwo.js"></script>
+  <!--<script type="text/javascript" src="js/colorProcessing.js"></script>-->
+ 
+</body>
+</html>
