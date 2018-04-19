@@ -127,6 +127,9 @@ def split(request):
     imgsrc = request.POST.get("key")##图片路径
     imgData = ImageData.objects.get(id=imgid)
     message = imgData.message
+    composite = imgData.se_composite_img
+    if composite==None:
+        composite = "null"
     if message==None:
         mystring = ''
         im = Image.open(str(imgsrc))
@@ -240,16 +243,19 @@ def split(request):
                 mystring = str(mystring) + str(text)
                 #cv2.imshow('sss',i)
                 m = m + 1
-        ret = {"key": mystring}
+        ret = {"message": mystring,"img":composite}
         imgData.message = mystring
         imgData.save()
-        return HttpResponse(mystring)
+        return HttpResponse(ret)
     elif message!=None:
         mystring = message
-        return HttpResponse(mystring)
+        ret = {"message": mystring, "img": composite}
+        return HttpResponse(ret)
     else:
         mystring="failed"
-        return HttpResponse(mystring)
+        composite="null"
+        ret = {"message": mystring, "img": composite}
+        return HttpResponse(ret)
 def belend(imgID):
     #方法用于将原图和一张处理图合成为一张图
     #参数是id
