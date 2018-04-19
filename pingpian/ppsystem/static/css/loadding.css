@@ -1,0 +1,408 @@
+#loadding{
+	background: #fff;
+}
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -5em;
+  width: 11em;
+  height: 11em;
+}
+.loader-text{
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  margin: -5em;
+  width: 11em;
+  height: 11em;
+  font-size: 20px;
+}
+#mainSwiper{
+	visibility: hidden;
+}
+
+/* loaddingText */
+@-webkit-keyframes rotate {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+@keyframes rotate {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes rotate2 {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+    border-top-color: rgba(0, 0, 0, 0.5);
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+    border-top-color: rgba(0, 0, 255, 0.5);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+    border-top-color: rgba(0, 0, 0, 0.5);
+  }
+}
+@keyframes rotate2 {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+    border-top-color: rgba(0, 0, 0, 0.5);
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+    border-top-color: rgba(0, 0, 255, 0.5);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+    border-top-color: rgba(0, 0, 0, 0.5);
+  }
+}
+.loaderText {
+  position: relative;
+  margin: 75px auto;
+  width: 150px;
+  height: 150px;
+  display: block;
+  overflow: hidden;
+}
+.loaderText div {
+  height: 100%;
+}
+
+.loader1, .loader1 div {
+  border-radius: 50%;
+  padding: 8px;
+  border: 2px solid transparent;
+  -webkit-animation: rotate linear 3.5s infinite;
+          animation: rotate linear 3.5s infinite;
+  border-top-color: rgba(0, 0, 0, 0.5);
+  border-bottom-color: rgba(0, 0, 255, 0.5);
+}
+
+div:hover {
+  -webkit-animation-play-state: paused;
+   animation-play-state: paused;
+}
+
+.loaderText, .loaderText * {
+  will-change: transform;-
+}
+.loaderText{
+	position: absolute;
+}
+.loaddingText{
+	display: none;
+	position: absolute;
+	transform: scale(1,0.28);
+	top: -20px;
+}
+.loaddingContent{
+	position: relative;
+}
+
+.k-line2 {
+  display:inline-block;
+  background:#666;
+  height:10px;
+  width:10px;
+  opacity:0;
+  border-radius:50%;
+  transform:translateX(-300px);
+  background-color:#4b9cdb
+}
+.k-line12-1 {
+  animation:k-loadingS 4s infinite;
+  animation-delay:.8s
+}
+.k-line12-2 {
+  animation:k-loadingS 4s infinite;
+  animation-delay:.7s
+}
+.k-line12-3 {
+  animation:k-loadingS 4s infinite;
+  animation-delay:.6s
+}
+.k-line12-4 {
+  animation:k-loadingS 4s infinite;
+  animation-delay:.5s
+}
+.k-line12-5 {
+  animation:k-loadingS 4s infinite;
+  animation-delay:.4s
+}
+.k-line12-6 {
+  animation:k-loadingS 4s infinite;
+  animation-delay:.3s
+}
+.k-line12-7 {
+  animation:k-loadingS 4s infinite;
+  animation-delay:.2s
+}
+.k-line12-8 {
+  animation:k-loadingS 4s infinite;
+  animation-delay:.1s
+}
+
+@keyframes k-loadingA {
+  0 {
+  height:15px
+}
+50% {
+  height:35px
+}
+100% {
+  height:15px
+}
+}@keyframes k-loadingB {
+  0 {
+  width:15px
+}
+50% {
+  width:35px
+}
+100% {
+  width:15px
+}
+}@keyframes k-loadingC {
+  0 {
+  transform:translate(0,0)
+}
+50% {
+  transform:translate(0,15px)
+}
+100% {
+  transform:translate(0,0)
+}
+}@keyframes k-loadingD {
+  0 {
+  transform:rotate(0deg)
+}
+50% {
+  transform:rotate(180deg)
+}
+100% {
+  transform:rotate(360deg)
+}
+}@keyframes k-loadingE {
+  0 {
+  transform:rotate(0deg)
+}
+100% {
+  transform:rotate(360deg)
+}
+}@keyframes k-loadingF {
+  0% {
+  opacity:0
+}
+100% {
+  opacity:1
+}
+}@keyframes k-loadingG {
+  0% {
+  transform:translate(0,0) rotate(0deg)
+}
+50% {
+  transform:translate(70px,0) rotate(360deg)
+}
+100% {
+  transform:translate(0,0) rotate(0deg)
+}
+}@keyframes k-loadingGb {
+  0% {
+  transform:translate(0,0) rotate(0deg)
+}
+50% {
+  transform:translate(-70px,0) rotate(-360deg)
+}
+100% {
+  transform:translate(0,0) rotate(0deg)
+}
+}@keyframes k-loadingH {
+  0% {
+  width:15px
+}
+50% {
+  width:35px;
+  padding:4px
+}
+100% {
+  width:15px
+}
+}@keyframes k-loadingHb {
+  0% {
+  width:15px;
+  background-color:#607D8B
+}
+50% {
+  width:35px;
+  padding:4px;
+  background-color:#455A64
+}
+100% {
+  width:15px;
+  background-color:#263238
+}
+}@keyframes k-loadingI {
+  100% {
+  transform:rotate(360deg)
+}
+}@keyframes k-loadingIb {
+  0%,100% {
+  transform:scale(0)
+}
+50% {
+  transform:scale(1)
+}
+}@keyframes k-loadingJ {
+  0%,100% {
+  transform:translate(0,0)
+}
+50% {
+  transform:translate(80px,0);
+  background-color:#f5634a;
+  width:25px
+}
+}@keyframes k-loadingK {
+  0% {
+  left:0;
+  transform:scale(1.1)
+}
+50% {
+  left:100%;
+  transform:scale(1)
+}
+100% {
+  left:0;
+  transform:scale(1.1)
+}
+}@keyframes k-loadingL {
+  0% {
+  left:100%;
+  transform:scale(1.1)
+}
+50% {
+  left:0;
+  transform:scale(1)
+}
+100% {
+  left:100%;
+  transform:scale(1.1)
+}
+}@keyframes k-loadingM {
+  0% {
+  z-index:0
+}
+50% {
+  z-index:1
+}
+100% {
+  z-index:0
+}
+}@keyframes k-loadingN {
+  0% {
+  z-index:1
+}
+50% {
+  z-index:0
+}
+100% {
+  z-index:1
+}
+}@keyframes k-loadingO {
+  0%,100% {
+  transform:translate(0)
+}
+25% {
+  transform:translate(160%)
+}
+50% {
+  transform:translate(160%,160%)
+}
+75% {
+  transform:translate(0,160%)
+}
+}@keyframes k-loadingP {
+  0% {
+  transform:translateY(0)
+}
+35% {
+  transform:translateY(0);
+  opacity:.3
+}
+50% {
+  transform:translateY(-20px);
+  opacity:.8
+}
+70% {
+  transform:translateY(3px);
+  opacity:.8
+}
+85% {
+  transform:translateY(-3px)
+}
+}@keyframes k-loadingQ {
+  33% {
+  transform:translate(0,0);
+  opacity:.7
+}
+66% {
+  transform:translate(0,0);
+  opacity:.7
+}
+}@keyframes k-loadingR {
+  0% {
+  opacity:.5;
+  background:#000
+}
+30% {
+  opacity:.5;
+  background:#666
+}
+60% {
+  opacity:0
+}
+75% {
+  opacity:0
+}
+100% {
+  opacity:.5;
+  background:#000
+}
+}@keyframes k-loadingS {
+  40% {
+  transform:translateX(0);
+  opacity:.8
+}
+100% {
+  transform:translateX(300px);
+  opacity:0
+}
+}
