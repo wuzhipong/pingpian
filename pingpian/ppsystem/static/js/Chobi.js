@@ -288,25 +288,23 @@ Chobi.prototype.noise = function(){
 	}
 	return this;
 }
-//设置对比度  算法原理不懂
-Chobi.prototype.contrast = function(amount,x,y){
+//设置对比度 
+Chobi.prototype.contrast = function(amount,mapX,mapY,endX,endY){
 	var value = (255.0 + amount) / 255.0;
 	value *= value;
 	var imageData = this.imageData;
-	
-	var mapX = 0;
-	var mapY = 0;
-	var endX = imageData.width;
-	var endY = imageData.height;
-	if(typeof(x) == "undefined" && typeof(y) == "undefined"){
-		return;
+
+	if(typeof(mapX) == "undefined" && typeof(mapY) == "undefined" && typeof(endX) =="undefined" && typeof(endY) == "undefined"){
+		endX = imageData.width;
+	    endY = imageData.height;
 	}else{
-		mapX = parseInt(x - 100);
-		mapY = parseInt(y - 100);
-		endX = parseInt(x + 100);
-		endY = parseInt(y + 100);
+		console.log(amount + " " + mapX + "  " + mapY + "  " + endX + "  " + endY);
 	};
-	
+	mapX = Math.round(mapX);
+	mapY = Math.round(mapY);
+	endX = Math.round(endX);
+	endY = Math.round(endY);
+
 	for(var i=mapX;i<endX;i++){
 		for(var j=mapY;j<endY;j++){
 			var index=(j*4)*imageData.width+(i*4);
@@ -346,22 +344,21 @@ Chobi.prototype.map = function(x,min,max,a,b){
 }
 
 //调整亮度
-Chobi.prototype.brightness = function(amount,x,y) {
+Chobi.prototype.brightness = function(amount,mapX,mapY,endX,endY) {
 	var imageData = this.imageData;
 	amount = this.map(amount,-100,100,-255,255);
 	var mapX = 0;
 	var mapY = 0;
-	var endX = imageData.width;
-	var endY = imageData.height;
-	if(typeof(x) == "undefined" && typeof(y) == "undefined"){
-		console.log(1);
+	if(typeof(mapX) == "undefined" && typeof(mapY) == "undefined" && typeof(endX) =="undefined" && typeof(endY) == "undefined"){
+		endX = imageData.width;
+	    endY = imageData.height;
 	}else{
-		mapX = parseInt(x - 100);
-		mapY = parseInt(y - 100);
-		endX = parseInt(x + 100);
-		endY = parseInt(y + 100);
+		console(1);
 	};
-
+	mapX = Math.round(mapX);
+	mapY = Math.round(mapY);
+	endX = Math.round(endX);
+	endY = Math.round(endY);
 	
 	for(var i=mapX;i<endX;i++){
 		for(var j=mapY;j<endY;j++){
