@@ -82,7 +82,7 @@
 			<div class="swiper-slide content" style="background: url(/static/image/background.jpg) repeat center top/100% auto;overflow-y: auto;overflow-x: auto;">
 				<div id="LRnavigation" style="background: url(/static/image/background.jpg) repeat center top/100% auto;">
 					<div class="modelTwo row" style="position: relative; margin-right: 0;margin-left: 0">
-						<div class="" style="min-width:900px">
+						<div class="MTcontentLeft">
 						  <!-- 模块二按钮 -->
 							<div class="MTtop" class="col-md-12 col-xs-12 col-sm-12">
 								<ul id="deal">
@@ -98,6 +98,7 @@
 										<div class="dropdown-content">
 											<button class="btn">标尺测量</button>
 											<button class="btn">画线测量</button>
+											<button class="btn">隐藏标尺</button>
 										</div>
 									</li>
 									<!--<li data-content="纵向标尺" data-placement="top" data-toggle="popover"><img src="img/icon/verticalScale.ico"></li>-->
@@ -124,20 +125,29 @@
 								</ul>
 							</div>
 							
-							<!-- 模块二图片显示区域 -->
-							<div id="ruler" class="MTcontent col-md-12 col-xs-12 col-sm-12">
-								<span id="distance"></span>
-								<div id="smallImgWarp" style="margin-top:20px;width:900px;">
-									<img  id="mygod" width=900px class="old" src="/static/image/original/T101-B6-H6-32R1.png"/>
-									<canvas width=900px id="MTcontent" class="old"></canvas><!-- 这个canvas是用来绘制图形的 -->
-									<canvas id="tempCanvas" style="display:none"></canvas><!-- 这个canvas是用来图片处理时借用得的 -->
-									<div id="assess" style="position: absolute; display: none; top: 20px; left:20px;z-index: 300; width: 30px; height: 30px; border: 1px solid rgba(255,255,255,1)"></div><!-- 评定框 -->
-									<div id="lay"></div>
-									<div id="assessTwo" style="display: none;z-index: 300; width: 60px; height: 30px; position: absolute; border: 1px solid rgba(255,255,255,1); top: 20px; left: 20px">
-										<p style="width: 50%; height: 100%; border-right: 1px solid rgba(255,255,255,1)"></p>
-									</div><!-- 综合评定框 -->
+							<div style="width: 100%; position: relative; height: 210px">
+								
+								<!-- 模块二图片显示区域 -->
+								<div id="ruler" class="MTcontent col-md-12 col-xs-12 col-sm-12">
+									<span id="distance"></span>
+									<div id="smallImgWarp" style="margin-top:20px;width:850px;">
+										<img id="mygod" width=850px class="old" src="/static/image/original/T101-B6-H6-32R1.png"/>
+										<canvas width=850px id="MTcontent" class="old"></canvas><!-- 这个canvas是用来绘制图形的 -->
+										<canvas id="tempCanvas" style="display:none"></canvas><!-- 这个canvas是用来图片处理时借用得的 -->
+										<canvas width="850px" class="selectArea"></canvas>
+										<!-- 色阶处理选定范围 -->
+										<div id="assess" ></div><!-- 评定框 -->
+										<div id="lay"></div>
+										<div id="assessTwo">
+											<p></p>
+										</div><!-- 综合评定框 -->
+									</div>
+									<!--<img class="old" draggable="false" id="MTcontent" src="img/1124YL\T307\test/1.jpg" > -->
 								</div>
-								<!--<img class="old" draggable="false" id="MTcontent" src="img/1124YL\T307\test/1.jpg" > -->
+							</div>
+							<!-- 显示图片处理过的图片位置 -->
+							<div id="imgProcessShow">
+								
 							</div>
 						</div>
 
@@ -217,6 +227,7 @@
 										</div>
 										<div id="partDeal">
 											<span>局部处理</span>
+											<input type="button" class="btn btn-default" id="selectProcessArea" name="" value="框选处理区域" >
 											<ul>
 												<li class="item">
 													<button class="btn btn-default">Contrast +5</button>
@@ -237,10 +248,14 @@
 									</div>
 								</div>
 							  </div>
-						
+							<!-- bigImg -->
 							<div id="bigImg">
 								<img src="/static/image/original/T101-B6-H6-32R1.png">
 							</div>
+							<!-- colorProcess -->
+							<!--<div id="imgColorProcess">
+								<img src="">
+							</div>-->
 						</div>
 					 </div>
 						
@@ -283,7 +298,7 @@
 						  </table>
 						  <!--<img  id="myimgDemo" width=900px src="img/1124YL/T307/test/1.jpg"/>-->
 						  <div class="row" style="margin-right:0;">
-							<div style="height: 40px; position: relative;overflow: hidden;">
+							<div style="height: 30px; position: relative;overflow: hidden;">
 								<span id="addSpan">+</span>
 							</div>
 						  </div>

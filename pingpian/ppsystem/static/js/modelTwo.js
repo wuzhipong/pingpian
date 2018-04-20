@@ -1,7 +1,7 @@
 /*
  *整个模块二的控制逻辑	
  */
-
+$.pageRuler(index);	
 var swiperImg = document.getElementById("swiperImg");
 var oImgs = swiperImg.getElementsByTagName("img");//获取top中的所有图片对象
 var oDiv = swiperImg.getElementsByTagName("div");
@@ -13,6 +13,7 @@ var index = 1;//记录图片放大的倍数
 var drag = document.getElementById("drag");//色阶处理
 var addSpan = document.getElementById("addSpan"); //添加没缺陷信息
 var lay = document.getElementById('lay');  //放大效果选中框
+var imgColorProcess = document.getElementById("imgColorProcess");
 var smallImg = document.getElementById('smallImgWarp'); //绑定lay移动事件
 var bigImg = document.getElementById('bigImg');  //再放大区域显示放大后的图片
 var imgB = bigImg.children[0];
@@ -23,6 +24,7 @@ var painter = new Painter("MTcontent");
 var LRnavigation = document.getElementById('LRnavigation');
 var painterDeal = document.getElementById("painterDeal");//绘制图形的清除与移动按钮
 var menuButton = document.querySelector('.menu-button'); //menu按钮
+var showImg = document.getElementById('imgProcessShow');
 var requestUrl = 1;//请求图片路径
 var ajax;		  
 var imgId = 1; //图片的id
@@ -172,7 +174,6 @@ var swiper2 = new Swiper('#swiperSlide', {
 					console.log("error");
 				})
 				.always(function() {
-					console.log("2");
 					//document.getElementsByClassName("loadding")[0].style.display = "none";
 				});
 			}
@@ -194,8 +195,14 @@ var swiper2 = new Swiper('#swiperSlide', {
 		        url:"/split/",
 		        dateType:"json",
 		        success:function (data) {
-		        	console.log(data);
-		            $("#textrRecognition").val(data);
+		        	var datajson = JSON.parse(data)
+					$("#textrRecognition").val(datajson[0].message);
+					if(datajson[0].img != "null"){
+						console.log(datajson[0].img)
+						showImg.innerHTML = '<img src="'+datajson[0].img+'" />';
+					}else{
+						showImg.innerHTML = '';
+					}	
 		            $("#loaddingText").css("display","none");
 		            $("#textrRecognition").css("display","block");
 		        },
@@ -224,6 +231,7 @@ function pathImgName(path){
 
 //图片的拖拽移动
 oLi[0].onclick = function(event){
+	selectAreaCanvas.style.zIndex = -1;
 	recoverColorProcessing(event);
 	//清空放大事件
 	oLi[7].flag = false;
@@ -241,7 +249,7 @@ oLi[0].onclick = function(event){
 }
 //图片的放大与缩小
 oLi[1].onclick = function(event){
-	recoverColorProcessing(event);
+	selectAreaCanvas.style.zIndex = -1;
 	oLi[5].flag = false;
 	drawRectangle(oLi[5]);
 	//清空放大事件
@@ -269,7 +277,7 @@ oLi[3].onclick = function(event){
 oLi[4].onclick = function(event){
 	recoverColorProcessing(event);
 	oLi[8].style.background = "rgba(100,100,100,0.75)";
-	hideRuler();
+	//hideRuler();
 	//清空放大事件
 	oLi[7].flag = false;
 	enlarge(oLi[7]);
@@ -287,6 +295,7 @@ oLi[4].onclick = function(event){
 
 //矩形绘制
 oLi[5].onclick = function(event){
+	selectAreaCanvas.style.zIndex = -1;
 	recoverColorProcessing(event);
 	oLi[6].flag = false;
 	changeMove(false);
@@ -295,7 +304,7 @@ oLi[5].onclick = function(event){
 	enlarge(oLi[7]);
 	
 	oLi[8].style.background = "rgba(100,100,100,0.75)";
-	hideRuler();
+	//hideRuler();
 	//清空评定框和综合评定框
 	oLi[11].flag = false;
 	assess(event,index,oLi[11]);
@@ -308,6 +317,7 @@ oLi[5].onclick = function(event){
 
 //椭圆绘制
 oLi[6].onclick = function(event){
+	selectAreaCanvas.style.zIndex = -1;
 	recoverColorProcessing(event);
 	oLi[5].flag = false;
 	changeMove(false);
@@ -316,7 +326,7 @@ oLi[6].onclick = function(event){
 	enlarge(oLi[7]);
 	
 	oLi[8].style.background = "rgba(100,100,100,0.75)";
-	hideRuler();
+	//hideRuler();
 	//清空评定框和综合评定框
 	oLi[11].flag = false;
 	assess(event,index,oLi[11]);
@@ -329,6 +339,7 @@ oLi[6].onclick = function(event){
 
 //放大效果
 oLi[7].onclick = function(event){
+	selectAreaCanvas.style.zIndex = -1;
 	//清空评定框和综合评定框
 	oLi[11].flag = false;
 	assess(event,index,oLi[11]);
@@ -337,13 +348,14 @@ oLi[7].onclick = function(event){
 	
 	recoverColorProcessing(event);
 	oLi[8].style.background = "rgba(100,100,100,0.75)";
-	hideRuler();
+	//hideRuler();
 	enlarge(this);
 }
 //标尺
 var oLiBtn = oLi[8].getElementsByTagName('button');
 //标尺测量
 oLiBtn[0].onclick = function(event){
+	selectAreaCanvas.style.zIndex = -1;
 	recoverColorProcessing(event);
 	//清空放大事件
 	oLi[7].flag = false;
@@ -360,9 +372,11 @@ oLiBtn[0].onclick = function(event){
 	painter.isDraw(false);
 	horizontaRuler();
 }
+
 //画线测量
 oLiBtn[1].flag = true;
 oLiBtn[1].onclick = function(event){
+	selectAreaCanvas.style.zIndex = -1;
 	recoverColorProcessing(event);		
 	//清除矩形绘制
 	oLi[5].flag = false;
@@ -382,7 +396,7 @@ oLiBtn[1].onclick = function(event){
 
 	//隐藏标尺
 	oLi[8].style.background = "rgba(100,100,100,0.75)";
-	hideRuler();
+	//hideRuler();
 	
 	oLi[9].style.background = "rgba(100,100,100,0.75)";
 	
@@ -397,14 +411,17 @@ oLiBtn[1].onclick = function(event){
 
 	drawLine(this);
 }
-
+//隐藏标尺
+oLiBtn[2].onclick = function(){
+	hideRuler();
+}
 //色阶处理
 oLi[9].onclick = function(event){
+	selectAreaCanvas.style.zIndex = 1001;
 	loadImage(mygod.src);
 	//清除放大事件
 	oLi[1].flag = false;
 	zoom(oLi[1],false,event);
-	
 	//清空图片移动事件
 	changeMove(false);
 	
@@ -421,26 +438,26 @@ oLi[9].onclick = function(event){
 	//清空标尺
 	oLi[8].style.background = "rgba(100,100,100,0.75)";
 	if(this.flag){
-		console.log("1122");
 		this.flag = false;
 		this.style.background = "#aaa";
-		drag.style.display = "block";
+		//drag.style.display = "block";
 	}else{
 		this.flag = true;
 		this.style.background = "rgba(100,100,100,0.75)";
-		drag.style.display = "none";	
+		//drag.style.display = "none";	
 	}
 	//隐藏标尺
-	hideRuler();
+	//hideRuler();
 }
 closeColorDeal.onclick = function(){
 	oLi[9].flag = true;
 	oLi[9].style.background = "rgba(100,100,100,0.75)";
-	drag.style.display = "none";
+	//drag.style.display = "none";
 }
 
 //评定框
 oLi[11].onclick = function(event){
+	selectAreaCanvas.style.zIndex = -1;
 	//清空放大事件
 	oLi[7].flag = false;
 	enlarge(oLi[7]);
@@ -449,6 +466,7 @@ oLi[11].onclick = function(event){
 }
 //综合评定框
 oLi[12].onclick = function(event){
+	selectAreaCanvas.style.zIndex = -1;
 	//清空放大事件
 	oLi[7].flag = false;
 	enlarge(oLi[7]);
@@ -497,7 +515,6 @@ function zoom(zoom,flag,event){
 			},false);
 		}//W3C
 		window.onmousewheel=document.onmousewheel=function(event){
-			//console.log(1);
 			scrollFunc(flag,event);
 		};//IE/Opera/Chrome/Safari
 		zoom.flag = false;
@@ -547,7 +564,6 @@ function Transform(tmp,event){
 		oLi[1].getElementsByTagName('img')[0].src = "/static/image/icon/enlarge.ico";
 		index = index+0.02;
 		if(!oLi[11].flag){
-			console.log(oLi[11].flag)
 			oLi[11].flag = true;
 			assess(event,index,oLi[11]);
 		}
@@ -568,7 +584,6 @@ function Transform(tmp,event){
 		}
 		if(!oLi[11].flag){
 			oLi[11].flag = true;
-			console.log(oLi[11].flag)
 			assess(event,index,oLi[11]);
 		}
 		if(!oLi[12].flag){
@@ -579,7 +594,6 @@ function Transform(tmp,event){
 		mygod.style.WebkitTransform="scale("+(index)+","+(index)+")";
 	}
 	painter.scale(index);
-	console.log($("#ruler").width())
 	if($("#ScaleBox").length && $("#ScaleBox").css("display") === "block"){
 		$.pageRulerScale(index);
 	}
@@ -589,7 +603,7 @@ function recoverColorProcessing(event){
 	oLi[9].style.background = "rgba(100,100,100,0.75)";
 	oLi[9].flag = true;
 	mygod.style.zIndex = "";
-	drag.style.display = "none";
+	//drag.style.display = "none";
 	selectArea(event,false);
 }
 
@@ -628,11 +642,11 @@ function recover(event){
 	//清空色阶处理
 	oLi[9].flag = true;
 	oLi[9].style.background = "rgba(100,100,100,0.75)";
-	drag.style.display = "none";
+	//drag.style.display = "none";
 
 	//隐藏标尺
-	oLi[8].style.background = "rgba(100,100,100,0.75)";
-	hideRuler();
+	//oLi[8].style.background = "rgba(100,100,100,0.75)";
+	//hideRuler();
 	
 	oLi[9].style.background = "rgba(100,100,100,0.75)";
 	
@@ -725,8 +739,8 @@ function enlarge(that){
 		canvasRect = MTcontent.getBoundingClientRect();  //获取canvas元素相对于视窗的位置集合。
 		canvasLeft = canvasRect.left;
 		canvasTop = canvasRect.top; 
-		
-		lay.style.width = parseFloat((300/scale)) + 'px';
+
+		lay.style.width = parseFloat((bigImg.offsetWidth/scale)) + 'px';
 		lay.style.height = parseFloat((280/scale)) + 'px';
 
 		imgB.style.width =  w*scale + 'px';
@@ -734,12 +748,12 @@ function enlarge(that){
 		
 		smallImg.style.height = h + "px";
 		smallImg.onmouseover = function(){
+			//imgColorProcess.style.display = "none";
 			lay.style.display = "block";
-			bigImg.style.display = "block";
 		}
 		smallImg.onmouseout = function(){
+			//imgColorProcess.style.display = "none";
 			lay.style.display = "none";
-			bigImg.style.display = "none";
 		}
 		
 		smallImg.onmousemove = function(event){
@@ -772,7 +786,7 @@ function enlarge(that){
 		smallImg.onmousemove = null;
 		smallImg.onmouseout = null;
 	}
-	}
+}
 //横向标尺
 function horizontaRuler(){
 	if($("#ScaleBox").length==0){
@@ -941,7 +955,6 @@ String.prototype.colorHex = function(){
 
 //以下为色阶处理方法
 var imgObj = null; //全局对象
-var demo = document.getElementById('demo');
 
 function loadImage(elem){
 	imgObj = new Chobi(elem);
@@ -954,6 +967,7 @@ function loadImage(elem){
 //色阶处理
 var disX = 0;
 var disY = 0;
+var selectProcessArea = document.getElementById("selectProcessArea");
 var drag = document.getElementById("drag");
 var integerDeal = document.getElementById("integerDeal"); //整体处理
 var obtn = integerDeal.getElementsByTagName("button");
@@ -983,6 +997,7 @@ drag.onmousedown = function(ev){
   }
   return false;
 }
+//整体处理
 obtn[0].onclick = function(){
 	imgObj.blackAndWhite();
 	imgObj.loadImageToCanvas();
@@ -1023,32 +1038,116 @@ obtn[9].onclick = function(){
 	loadImage(tempMyGod);
 }
 
-partBtn[0].onclick = function(){
+//框选区域的范围
+var endX;  
+var endY;
+var startX;
+var startY;
+//框选色阶局部范围
+var selectAreaCanvas = document.getElementsByClassName('selectArea')[0];
+selectAreaCanvas.onmousedown = function(event){
+	var e = event||window.event;
+	var imgRect = mygod.getBoundingClientRect();
+	var imgLeft = imgRect.left;
+	var imgTop = imgRect.top;
+	var layerName = "layer";
+	selectAreaCanvas.height = mygod.height;
+	startX = (e.clientX - imgLeft)/index;
+	startY = (e.clientY - imgTop)/index;
+	//selectArea(event,flagDeal,selectflag);
+	selectAreaCanvas.onmousemove = function(event){
+		endX = (event.clientX - imgLeft)/index;
+		endY = (event.clientY - imgTop)/index;
+		var width = endX - startX;
+		var height = endY - startY;
+		$(".selectArea").removeLayer(layerName);
+		$(".selectArea").addLayer({
+			type: "rectangle",
+			name:layerName,
+			strokeStyle: "#fff",
+			strokeWidth: "2",
+			fromCenter: false,
+			x: startX, y: startY,
+			width: width,
+			height: height
+		});
+		$(".selectArea").drawLayers();
+	}
+	selectAreaCanvas.onmouseup = function(event){
+		$(".selectArea").removeLayer(layerName);
+		selectAreaCanvas.onmousemove = null;
+		selectAreaCanvas.onmouseup = null;
+		colorProcessMethod();
+	}
+}
+
+//局部处理
+function colorProcessMethod(){
 	mygod.style.zIndex = 998;
-	flagDeal = true;
-	selectflag = 1;
+	var realStartX = startX*(mygod.naturalWidth/850)
+	var realStartY = startY*(mygod.naturalWidth/850);	
+	var realEndX = endX*(mygod.naturalWidth/850);
+	var realEndY = endY*(mygod.naturalWidth/850);
+
+	if(imgObj.contrast(20,realStartX,realStartY,realEndX,realEndY)){
+		console.log("对比度");
+		imgObj.loadImageToCanvas();
+	}else{
+		console.log("对比度")
+	}
+
 }
 
 partBtn[1].onclick = function(){
 	mygod.style.zIndex = 998;
-	flagDeal = true;
-	selectflag = 2;
+	var realStartX = startX*(mygod.naturalWidth/850);
+	var realStartY = startY*(mygod.naturalWidth/850);	
+	var realEndX = endX*(mygod.naturalWidth/850);
+	var realEndY = endY*(mygod.naturalWidth/850);
+
+	console.log(realStartX + " " + realStartY + "  " + realEndX + "  " + realEndY);
+	if(imgObj.contrast(-5,realStartX,realStartY,realEndX,realEndY)){
+		console.log("对比度");
+		imgObj.loadImageToCanvas();
+	}else{
+		console.log("对比度")
+	}
 }
 
 partBtn[2].onclick = function(){
 	mygod.style.zIndex = 998;
-	flagDeal = true;
-	selectflag = 3;
+	var realStartX = startX*(mygod.naturalWidth/850);
+	var realStartY = startY*(mygod.naturalWidth/850);	
+	var realEndX = endX*(mygod.naturalWidth/850);
+	var realEndY = endY*(mygod.naturalWidth/850);
+
+	console.log(realStartX + " " + realStartY + "  " + realEndX + "  " + realEndY);
+	if(imgObj.brightness(5,realStartX,realStartY,realEndX,realEndY)){
+		console.log("亮度");
+		imgObj.loadImageToCanvas();
+	}else{
+		console.log("亮度")
+	}
 }
 
 partBtn[3].onclick = function(){
 	mygod.style.zIndex = 998;
-	flagDeal = true;
-	selectflag = 4;
+	var realStartX = startX*(mygod.naturalWidth/850);
+	var realStartY = startY*(mygod.naturalWidth/850);	
+	var realEndX = endX*(mygod.naturalWidth/850);
+	var realEndY = endY*(mygod.naturalWidth/850);
+
+	console.log(realStartX + " " + realStartY + "  " + realEndX + "  " + realEndY);
+	if(imgObj.brightness(-5,realStartX,realStartY,realEndX,realEndY)){
+		console.log("亮度");
+		imgObj.loadImageToCanvas();
+	}else{
+		console.log("亮度")
+	}
 }
 
-mygod.onmousedown = function(event){
-	selectArea(event,flagDeal,selectflag);
+selectProcessArea.onclick = function(){
+	selectAreaCanvas.style.zIndex = 1001;
 }
 
 function selectArea(event,flag,selectflag){
@@ -1067,9 +1166,8 @@ function selectArea(event,flag,selectflag){
 }
 
 function imgSelectDeal(that,x,y,selectflag){
-	var realX = x*(that.naturalWidth/900);
-	var realY = y*(that.naturalWidth/900);
-	
+	var realX = x*(that.naturalWidth/850);
+	var realY = y*(that.naturalWidth/850);	
 	if(selectflag == 1){
 		imgObj.contrast(5,realX,realY);
 	}else if(selectflag == 2){
@@ -1174,22 +1272,22 @@ submit.onclick = function(){
 			data: JSON.parse(dataShuju)
 		})
 		.done(function(data) {
-			console.log("nice" + "  " + data);
 			var inputs = tableNews.getElementsByTagName('input');
 			for(var i=1;i<inputs.length;i++){
 				inputs[i].value = "";
 			}
+			loadImage(tempMyGod);
 			alert("数据提交成功");
 		})
 		.fail(function() {
-			console.log("fail");
+			alert("数据提交失败");
 		})
 		.always(function() {
 			console.log("complete");
 		});	
 	})
 	.fail(function() {
-		console.log("error");
+		alert("数据提交失败");
 	})
 	.always(function() {
 		console.log("complete");

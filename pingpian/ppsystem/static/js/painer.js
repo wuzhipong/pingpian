@@ -29,6 +29,7 @@
 		
 		var MTparent = document.getElementsByClassName("MTcontent")[0];
 		var mygod = document.getElementById("mygod");
+		var selectArea = document.getElementsByClassName('selectArea')[0];
 		canvas.onmousedown = function(event){
 			var shape;
 			if(!that.shape){
@@ -49,13 +50,39 @@
 			parentCanvasLeft = MTparentRect.left;
 			parentCanvasTop = MTparentRect.top;
 			if(that.isMove){
+				var criticalPoint = document.getElementById('ruler');
+
+				//父级容器的宽高作为拖拽的琳临界点
+				var criticalX = criticalPoint.offsetWidth;
+				var criticalY = criticalPoint.offsetHeight;
 				var e = event||window.event;
 				disX = e.clientX - (canvasLeft - parentCanvasLeft);
 				disY = e.clientY - (canvasTop - parentCanvasTop);
+				var x = criticalX - canvas.width;
+				var y = criticalY - canvas.height;
+
 				document.onmousemove = function(event){
-					var e = event||window.event;					
-					mygod.style.left = canvas.style.left = e.clientX - disX + (parseFloat(canvas.width)*(that.index-1))/2 + 'px';
-					mygod.style.top = canvas.style.top = e.clientY - disY+ (parseFloat(canvas.height)*(that.index-1))/2 +'px';
+					var e = event||window.event;
+					var left = e.clientX - disX + (parseFloat(canvas.width)*(that.index-1))/2;
+					var top = e.clientY - disY+ (parseFloat(canvas.height)*(that.index-1))/2;
+
+				
+					if(left<-(canvas.width*that.index)/2){
+						left = -(canvas.width*that.index)/2;
+					}
+					if(top<-(canvas.height*that.index)/2){
+						top = -(canvas.height*that.index)/2;
+					}
+					if(left> (canvas.width*that.index)/2){
+						left = (canvas.width*that.index)/2;
+					}
+					if(top > (canvas.height*that.index)/2){
+						top = (canvas.height*that.index)/2;
+					}
+
+					selectArea.style.left = mygod.style.left = canvas.style.left = left + 'px';
+					selectArea.style.top = mygod.style.top = canvas.style.top = top +'px';
+										
 					if(canvas.setCapture){
 						canvas.setCapture();
 						mygod.setCapture();
@@ -114,8 +141,8 @@
 							x2: width, y2: height,
 							index: lineLayer
 						});
-						var relLength = ((Math.sqrt((Math.pow(needWidth,2)+Math.pow(needHeight,2))))/3).toFixed(3);
-						document.getElementById("distance").innerText = relLength + "mm";
+						var relLength = ((Math.sqrt((Math.pow(needWidth,2)+Math.pow(needHeight,2))))/30).toFixed(3) + "mm";
+
 						$("#"+canvasId).removeLayer(linelayerName);
 						$("#"+canvasId).drawText({
 							layer: true,
@@ -137,7 +164,7 @@
 							},
 							strokeWidth: 0.1,
 							x: x, y: y-5,
-							fontSize: 12,
+							fontSize: 10,
 							fontFamily: 'Verdana',
 							text: relLength
 						});
@@ -145,7 +172,7 @@
 					}else{
 						width = (event.clientX-canvasLeft)/that.index-x;
 						height = (event.clientY-canvasTop)/that.index-y;
-						console.log(2);
+						console.log(x + "  " + y + "  " + width + "  " + height);
 						$("#"+canvasId).removeLayer(layerName);
 						$("#"+canvasId).addLayer({
 							type: shape,
