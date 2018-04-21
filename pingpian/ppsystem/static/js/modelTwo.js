@@ -25,6 +25,9 @@ var LRnavigation = document.getElementById('LRnavigation');
 var painterDeal = document.getElementById("painterDeal");//绘制图形的清除与移动按钮
 var menuButton = document.querySelector('.menu-button'); //menu按钮
 var showImg = document.getElementById('imgProcessShow');
+//框选色阶局部范围
+var selectAreaCanvas = document.getElementsByClassName('selectArea')[0];
+
 var requestUrl = 1;//请求图片路径
 var ajax;		  
 var imgId = 1; //图片的id
@@ -249,7 +252,7 @@ oLi[0].onclick = function(event){
 }
 //图片的放大与缩小
 oLi[1].onclick = function(event){
-	selectAreaCanvas.style.zIndex = -1;
+	
 	oLi[5].flag = false;
 	drawRectangle(oLi[5]);
 	//清空放大事件
@@ -576,6 +579,7 @@ function Transform(tmp,event){
 		}
 		MTcontent.style.WebkitTransform="scale("+(index)+","+(index)+")";
 		mygod.style.WebkitTransform="scale("+(index)+","+(index)+")";
+		selectAreaCanvas.style.WebkitTransform = "scale("+(index)+","+(index)+")";
 	}else{
 		oLi[1].getElementsByTagName('img')[0].src = "/static/image/icon/narrow.ico";
 		index = index-0.02;
@@ -592,6 +596,7 @@ function Transform(tmp,event){
 		}
 		MTcontent.style.WebkitTransform="scale("+(index)+","+(index)+")";
 		mygod.style.WebkitTransform="scale("+(index)+","+(index)+")";
+		selectAreaCanvas.style.WebkitTransform = "scale("+(index)+","+(index)+")";
 	}
 	painter.scale(index);
 	if($("#ScaleBox").length && $("#ScaleBox").css("display") === "block"){
@@ -1043,8 +1048,7 @@ var endX;
 var endY;
 var startX;
 var startY;
-//框选色阶局部范围
-var selectAreaCanvas = document.getElementsByClassName('selectArea')[0];
+
 selectAreaCanvas.onmousedown = function(event){
 	var e = event||window.event;
 	var imgRect = mygod.getBoundingClientRect();
