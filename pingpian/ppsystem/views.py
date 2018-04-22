@@ -150,7 +150,7 @@ def split(request):
                                     cv2.THRESH_BINARY_INV,3,5)#加权
         th3 = cv2.adaptiveThreshold(GrayImage,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,\
                                     cv2.THRESH_BINARY,51,13)
-        th4 = cv2.threshold(GrayImage,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+        ret2,th4 = cv2.threshold(GrayImage,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
         titles = ['Gray Image','Global Thresholding v = 127',
               'adaptive mean thresholding','adaptive gaussian thresholding']
         images = [GrayImage,th1,th2,th3]
