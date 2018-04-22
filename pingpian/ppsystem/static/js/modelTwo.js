@@ -660,6 +660,8 @@ function recover(event){
 	assess(event,index,oLi[11]);
 	oLi[12].flag = false;
 	comprehensiveAssess(event,index,oLi[12]);
+	//色阶区域
+	selectAreaCanvas.style.WebkitTransform = "scale("+(index)+","+(index)+")";
 }
 
 //颜色选取
