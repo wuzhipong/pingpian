@@ -150,13 +150,13 @@ def split(request):
                                     cv2.THRESH_BINARY_INV,3,5)#加权
         th3 = cv2.adaptiveThreshold(GrayImage,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,\
                                     cv2.THRESH_BINARY,51,13)
-
+        th4 = cv2.threshold(GrayImage,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
         titles = ['Gray Image','Global Thresholding v = 127',
               'adaptive mean thresholding','adaptive gaussian thresholding']
         images = [GrayImage,th1,th2,th3]
         #misc.imsave('F:\pip\zest\zzzz.png',th3)#保存图片
         #cv2.imwrite("imgsrc.png",th3)
-        img_thre = th1
+        img_thre = th4
         #分割字符
         white = [] #记录每一列的白色像素和
         black = [] #记录每一列的黑色像素和
