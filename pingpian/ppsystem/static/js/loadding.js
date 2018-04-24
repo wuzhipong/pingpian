@@ -38,7 +38,6 @@ window.onload = function(){
 			}else{
 				showImg.innerHTML = '';
 			}	
-			console.log(datajson);
 		    document.getElementById("mainSwiper").style.visibility = "visible";
 		    document.getElementById("loadding").style.display = "none";
 		})

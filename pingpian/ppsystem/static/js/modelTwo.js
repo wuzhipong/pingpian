@@ -14,6 +14,7 @@ var drag = document.getElementById("drag");//色阶处理
 var addSpan = document.getElementById("addSpan"); //添加没缺陷信息
 var lay = document.getElementById('lay');  //放大效果选中框
 var imgColorProcess = document.getElementById("imgColorProcess");
+var imgA = imgColorProcess.getElementsByTagName("img")[0];
 var smallImg = document.getElementById('smallImgWarp'); //绑定lay移动事件
 var bigImg = document.getElementById('bigImg');  //再放大区域显示放大后的图片
 var imgB = bigImg.children[0];
@@ -348,7 +349,8 @@ oLi[7].onclick = function(event){
 	assess(event,index,oLi[11]);
 	oLi[12].flag = false;
 	comprehensiveAssess(event,index,oLi[12]);
-	
+	imgColorProcess.style.display = "none";
+	bigImg.style.display = "block";
 	recoverColorProcessing(event);
 	oLi[8].style.background = "rgba(100,100,100,0.75)";
 	//hideRuler();
@@ -420,6 +422,9 @@ oLiBtn[2].onclick = function(){
 }
 //色阶处理
 oLi[9].onclick = function(event){
+	imgColorProcess.style.display = "block";
+	bigImg.style.display = "none";
+
 	selectAreaCanvas.style.zIndex = 1001;
 	loadImage(mygod.src);
 	//清除放大事件
@@ -483,8 +488,9 @@ oLi[13].onmouseover = function(){
 
 
 dealpainterBtn[0].onclick = function(){
-	painter.isDraw(true);
-	painter.drawMove(true);
+	//painter.isDraw(true);
+	//painter.drawMove(true);
+	$("#MTcontent").removeLayers();
 }
 //清除绘制的图形
 dealpainterBtn[1].onclick = function(){
@@ -609,7 +615,7 @@ function recoverColorProcessing(event){
 	oLi[9].flag = true;
 	mygod.style.zIndex = "";
 	//drag.style.display = "none";
-	selectArea(event,false);
+	//selectArea(event,false);
 }
 
 //图片的还原	
@@ -662,6 +668,7 @@ function recover(event){
 	comprehensiveAssess(event,index,oLi[12]);
 	//色阶区域
 	selectAreaCanvas.style.WebkitTransform = "scale("+(index)+","+(index)+")";
+	loadImage(mygod.src);
 }
 
 //颜色选取
@@ -962,15 +969,6 @@ String.prototype.colorHex = function(){
 
 //以下为色阶处理方法
 var imgObj = null; //全局对象
-
-function loadImage(elem){
-	imgObj = new Chobi(elem);
-	imgObj.ready(function(){
-		this.canvas = document.getElementById("tempCanvas");
-		this.loadImageToCanvas();
-	});
-} 
-
 //色阶处理
 var disX = 0;
 var disY = 0;
@@ -983,8 +981,8 @@ var selectflag = null;
 
 var partDeal = document.getElementById("partDeal"); //局部处理
 var partBtn = partDeal.getElementsByTagName("button");
-//鼠标按下时
-drag.onmousedown = function(ev){
+//drag
+/*drag.onmousedown = function(ev){
   var ev = ev || window.event;
   disX = ev.clientX - drag.offsetLeft;
   disY = ev.clientY - drag.offsetTop;
@@ -1003,9 +1001,9 @@ drag.onmousedown = function(ev){
 	document.onmouseup = null;
   }
   return false;
-}
+}*/
 //整体处理
-obtn[0].onclick = function(){
+/*obtn[0].onclick = function(){
 	imgObj.blackAndWhite();
 	imgObj.loadImageToCanvas();
 }
@@ -1043,6 +1041,15 @@ obtn[8].onclick = function(){
 }
 obtn[9].onclick = function(){
 	loadImage(tempMyGod);
+}*/
+
+
+function loadImage(elem){
+	imgObj = new Chobi(elem);
+	imgObj.ready(function(){
+		this.canvas = document.getElementById("tempCanvas");
+		this.loadImageToCanvas();
+	});
 }
 
 //框选区域的范围
@@ -1057,9 +1064,11 @@ selectAreaCanvas.onmousedown = function(event){
 	var imgLeft = imgRect.left;
 	var imgTop = imgRect.top;
 	var layerName = "layer";
+
 	selectAreaCanvas.height = mygod.height;
 	startX = (e.clientX - imgLeft)/index;
 	startY = (e.clientY - imgTop)/index;
+
 	//selectArea(event,flagDeal,selectflag);
 	selectAreaCanvas.onmousemove = function(event){
 		endX = (event.clientX - imgLeft)/index;
@@ -1090,21 +1099,41 @@ selectAreaCanvas.onmousedown = function(event){
 //局部处理
 function colorProcessMethod(){
 	mygod.style.zIndex = 998;
+
 	var realStartX = startX*(mygod.naturalWidth/850)
 	var realStartY = startY*(mygod.naturalWidth/850);	
 	var realEndX = endX*(mygod.naturalWidth/850);
 	var realEndY = endY*(mygod.naturalWidth/850);
 
-	if(imgObj.contrast(20,realStartX,realStartY,realEndX,realEndY)){
-		console.log("对比度");
-		imgObj.loadImageToCanvas();
+	console.log(realStartX + " " + realEndX + " " + realStartY + " " +realEndY)
+
+	imgColorProcess.style.width = Math.abs(realEndX - realStartX) + "px";
+	imgColorProcess.style.height = Math.abs(realEndY - realStartY) + "px";
+	if(imgObj.negative(realStartX,realStartY,realEndX,realEndY)){
+		if(imgObj.contrast(15,realStartX,realStartY,realEndX,realEndY)){
+			console.log("对比度");
+			if(realStartX <= realEndX && realEndY >= realStartY){
+				imgA.style.left = -realStartX + "px";
+				imgA.style.top = -realStartY + "px";
+			}else if(realEndX >= realStartX && realEndY < realStartY){
+				imgA.style.left = -realStartX + "px";
+				imgA.style.top = -realEndY + "px";
+			}else if(realEndX < realStartX && realEndY > realStartY){
+				imgA.style.left = -realEndX + "px";
+				imgA.style.top = -realStartY + "px";
+			}else{
+				imgA.style.left = -realEndX + "px";
+				imgA.style.top = -realEndY + "px";
+			}
+			imgObj.loadImageToCanvas();
+		}
 	}else{
 		console.log("对比度")
 	}
 
 }
 
-partBtn[1].onclick = function(){
+/*partBtn[1].onclick = function(){
 	mygod.style.zIndex = 998;
 	var realStartX = startX*(mygod.naturalWidth/850);
 	var realStartY = startY*(mygod.naturalWidth/850);	
@@ -1112,6 +1141,7 @@ partBtn[1].onclick = function(){
 	var realEndY = endY*(mygod.naturalWidth/850);
 
 	console.log(realStartX + " " + realStartY + "  " + realEndX + "  " + realEndY);
+
 	if(imgObj.contrast(-5,realStartX,realStartY,realEndX,realEndY)){
 		console.log("对比度");
 		imgObj.loadImageToCanvas();
@@ -1151,7 +1181,6 @@ partBtn[3].onclick = function(){
 		console.log("亮度")
 	}
 }
-
 selectProcessArea.onclick = function(){
 	selectAreaCanvas.style.zIndex = 1001;
 }
@@ -1185,6 +1214,7 @@ function imgSelectDeal(that,x,y,selectflag){
 	}
 	imgObj.loadImageToCanvas();
 }
+*/
 
 //添加缺陷信息
 var tempTable = null;
@@ -1300,3 +1330,7 @@ submit.onclick = function(){
 	});
 }
 
+//禁用鼠标右键
+document.oncontextmenu = function(){
+　　return false;
+}

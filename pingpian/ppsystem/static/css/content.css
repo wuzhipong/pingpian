@@ -144,8 +144,13 @@
 	position: relative;
 	overflow: hidden;
 	background: #ccc;
+	display: none;
 }
-
+#imgColorProcess img{
+	position: absolute;
+	left: 0;
+	top: 0;
+}
 #mygod:hover{
 	cursor: crosshair;
 }
@@ -156,7 +161,7 @@
 	width: 25%;
 	z-index: 10;
 	height: 100%;
-	overflow-y: hidden;
+	overflow-y: auto;
 	background: rgba(200,200,200,0.6);
 	border-left: 1px solid #eee;
 }

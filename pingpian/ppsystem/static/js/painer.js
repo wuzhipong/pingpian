@@ -10,6 +10,7 @@
 	Painter.prototype.drawLine = function(canvasId){
 		var needWidth = 0;
 		var needHeight = 0;
+		var flagMove;
 		var that = this;
 		var layer = 0;		//图层设置
 		var layerIndex=layer;  
@@ -172,19 +173,31 @@
 					}else{
 						width = (event.clientX-canvasLeft)/that.index-x;
 						height = (event.clientY-canvasTop)/that.index-y;
-						console.log(x + "  " + y + "  " + width + "  " + height);
 						$("#"+canvasId).removeLayer(layerName);
 						$("#"+canvasId).addLayer({
 							type: shape,
 							draggable: true,
+							bringToFront: true,
+							dragstart: function(layer){
+								if(!that.isEraser){
+									that.isdrawMove = true;
+								}
+							},
+							dragstop: function(layer){
+								if(!that.isEraser){
+									console.log(1);
+									that.isdrawMove = false;
+								}
+							},
 							mouseover: function(layer){
 								if(that.isdrawMove){
 									MTcontent.style.cursor = "move";
 								}else if(that.isEraser){
 									MTcontent.style.cursor = "pointer"
+
 								}
 							},
-							mousedown: function(layer) {
+							click: function(layer) {
 								if(that.isEraser){
 									$("#"+canvasId).removeLayer(layer.name);
 								}

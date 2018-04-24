@@ -113,8 +113,9 @@ Chobi.prototype.loadImageToCanvas = function(drawArea){
 		//var mycanvas = document.getElementById("thecanvas");  
 		var image = drawArea.toDataURL("image/png");  
 		//w.document.write("<img src='"+image+"' alt='from canvas'/>");
-		var img = document.getElementById("mygod");
-		img.src = image;
+		var imgColorProcess = document.getElementById("imgColorProcess");
+		var imgA = imgColorProcess.getElementsByTagName("img")[0];
+		imgA.src = image;
 	}
 	catch(e){
 		return false;
@@ -245,10 +246,36 @@ Chobi.prototype.sepia = function(x,y){
 //反色即底片效果
 //算法原理：将当前像素点的RGB值分别与255之差后的值作为当前点的RGB值，即
 //R = 255 – R；G = 255 – G；B = 255 – B；
-Chobi.prototype.negative = function(){
+Chobi.prototype.negative = function(mapX,mapY,endX,endY){
 	var imageData = this.imageData;
-	for(var i=0;i<imageData.width;i++){
-		for(var j=0;j<imageData.height;j++){
+
+	if(typeof(mapX) == "undefined" && typeof(mapY) == "undefined" && typeof(endX) =="undefined" && typeof(endY) == "undefined"){
+		endX = imageData.width;
+	    endY = imageData.height;
+	}else{
+		//console.log(mapX + "  " + mapY + "  " + endX + "  " + endY);
+	};
+	mapX = Math.round(mapX);
+	mapY = Math.round(mapY);
+	endX = Math.round(endX);
+	endY = Math.round(endY);
+
+	if(mapX>endX){
+		var temp;
+		temp = mapX;
+		mapX = endX;
+		endX = temp;
+	}
+
+	if(mapY>endY){
+		var temp;
+		temp = mapX;
+		mapY = endY;
+		endY = temp;
+	}
+
+	for(var i=mapX;i<endX;i++){
+		for(var j=mapY;j<endY;j++){
 			var index=(j*4)*imageData.width+(i*4);
 			var red=imageData.data[index];
 			var green=imageData.data[index+1];
@@ -264,30 +291,7 @@ Chobi.prototype.negative = function(){
 	}
 	return this;
 }
-//获取随机数  为后面添加噪点做准备
-Chobi.prototype.random = function(min, max) {
-	return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-//添加噪点
-Chobi.prototype.noise = function(){
-	var imageData = this.imageData;
-	for(var i=0;i<imageData.width;i++){
-		for(var j=0;j<imageData.height;j++){
-			var index=(j*4)*imageData.width+(i*4);
-			var rindex=(i*4)*imageData.width+(j*4);
-			var randRed = this.random(100,200);
-			var randGreen = this.random(100,200);
-			var randBlue = this.random(100,200);
-			var red=(imageData.data[index]+randRed)/2;
-			var green=(imageData.data[index+1]+randGreen)/2;
-			var blue=(imageData.data[index+2]+randBlue)/2;
-			imageData.data[index] = red;
-			imageData.data[index+1] = green;
-			imageData.data[index+2] = blue;
-		}
-	}
-	return this;
-}
+
 //设置对比度 
 Chobi.prototype.contrast = function(amount,mapX,mapY,endX,endY){
 	var value = (255.0 + amount) / 255.0;
@@ -298,12 +302,25 @@ Chobi.prototype.contrast = function(amount,mapX,mapY,endX,endY){
 		endX = imageData.width;
 	    endY = imageData.height;
 	}else{
-		console.log(amount + " " + mapX + "  " + mapY + "  " + endX + "  " + endY);
+		//console.log(amount + " " + mapX + "  " + mapY + "  " + endX + "  " + endY);
 	};
 	mapX = Math.round(mapX);
 	mapY = Math.round(mapY);
 	endX = Math.round(endX);
 	endY = Math.round(endY);
+
+	if(mapX>endX){
+		var temp;
+		temp = mapX;
+		mapX = endX;
+		endX = temp;
+	}
+
+	if(mapY>endY){
+		var temp;
+		mapY = endY;
+		endY = mapY;
+	}
 
 	for(var i=mapX;i<endX;i++){
 		for(var j=mapY;j<endY;j++){
@@ -323,6 +340,31 @@ Chobi.prototype.contrast = function(amount,mapX,mapY,endX,endY){
 			if(green<0) green=0;
 			if(blue>255) blue=255;
 			if(blue<0) blue=0;
+			imageData.data[index] = red;
+			imageData.data[index+1] = green;
+			imageData.data[index+2] = blue;
+		}
+	}
+	return this;
+}
+
+//获取随机数  为后面添加噪点做准备
+Chobi.prototype.random = function(min, max) {
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+//添加噪点
+Chobi.prototype.noise = function(){
+	var imageData = this.imageData;
+	for(var i=0;i<imageData.width;i++){
+		for(var j=0;j<imageData.height;j++){
+			var index=(j*4)*imageData.width+(i*4);
+			var rindex=(i*4)*imageData.width+(j*4);
+			var randRed = this.random(100,200);
+			var randGreen = this.random(100,200);
+			var randBlue = this.random(100,200);
+			var red=(imageData.data[index]+randRed)/2;
+			var green=(imageData.data[index+1]+randGreen)/2;
+			var blue=(imageData.data[index+2]+randBlue)/2;
 			imageData.data[index] = red;
 			imageData.data[index+1] = green;
 			imageData.data[index+2] = blue;
