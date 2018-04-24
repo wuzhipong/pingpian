@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" name="viewport" content="width=device-width,initial-scale=0.5">
   <link rel="stylesheet" href="/static/css/bootstrap.min.css">
   <link rel="stylesheet" href="/static/css/swiper.min.css">
   <link rel="stylesheet" href="/static/css/content.css">
@@ -118,7 +118,7 @@
 									</li>
 									<li>
 										<div id="painterDeal">
-											<button class="btn btn-default">移动</button>
+											<button class="btn btn-default">清空</button>
 											<button class="btn btn-default">清除</button>
 										</div>
 									</li>
@@ -134,7 +134,7 @@
 										<img id="mygod" width=850px class="old" src="/static/image/original/T101-B6-H6-32R1.png"/>
 										<canvas width=850px id="MTcontent" class="old"></canvas><!-- 这个canvas是用来绘制图形的 -->
 										<canvas id="tempCanvas" style="display:none"></canvas><!-- 这个canvas是用来图片处理时借用得的 -->
-										<canvas width="850px" class="selectArea"></canvas>
+										<canvas width="850px" id="selectArea" class="selectArea"></canvas>
 										<!-- 色阶处理选定范围 -->
 										<div id="assess" ></div><!-- 评定框 -->
 										<div id="lay"></div>
@@ -253,9 +253,9 @@
 								<img src="/static/image/original/T101-B6-H6-32R1.png">
 							</div>
 							<!-- colorProcess -->
-							<!--<div id="imgColorProcess">
+							<div id="imgColorProcess">
 								<img src="">
-							</div>-->
+							</div>
 						</div>
 					 </div>
 						
