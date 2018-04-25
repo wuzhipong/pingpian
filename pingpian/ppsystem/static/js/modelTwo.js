@@ -131,6 +131,7 @@ var swiper2 = new Swiper('#swiperSlide', {
 		slideChangeTransitionStart: function(){
 			$("#textrRecognition").css("display","none");
 			$("#loaddingText").css("display","block");
+			recoverRight();
 			//清空操作
 			recover();
 			var inputs = tableNews.getElementsByTagName('input');
@@ -1203,7 +1204,7 @@ selectAreaCanvas.onmousedown = function(event){
 	var imgLeft = imgRect.left;
 	var imgTop = imgRect.top;
 	var layerName = "layer";
-
+	var flag1 = true;
 	selectAreaCanvas.height = mygod.height;
 	startX = (e.clientX - imgLeft)/index;
 	startY = (e.clientY - imgTop)/index;
@@ -1231,14 +1232,14 @@ selectAreaCanvas.onmousedown = function(event){
 		$(".selectArea").removeLayer(layerName);
 		selectAreaCanvas.onmousemove = null;
 		selectAreaCanvas.onmouseup = null;
-		colorProcessMethod();
+		loadImage(tempMyGod);
+		setTimeout(function(){ colorProcessMethod(); }, 10);
 	}
 }
 
 //局部处理
-function colorProcessMethod(){
+function colorProcessMethod(){	
 	mygod.style.zIndex = 998;
-
 	var realStartX = startX*(mygod.naturalWidth/850)
 	var realStartY = startY*(mygod.naturalWidth/850);	
 	var realEndX = endX*(mygod.naturalWidth/850);
@@ -1246,6 +1247,7 @@ function colorProcessMethod(){
 
 	imgColorProcess.style.width = Math.abs(realEndX - realStartX) + "px";
 	imgColorProcess.style.height = Math.abs(realEndY - realStartY) + "px";
+
 	if(imgObj.negative(realStartX,realStartY,realEndX,realEndY)){
 		if(imgObj.contrast(15,realStartX,realStartY,realEndX,realEndY)){
 			console.log("对比度");
