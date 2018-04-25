@@ -43,7 +43,6 @@
 			ui: function(){
 				rh.html("");
 				rv.html("");
-				console.log(w + " " +h);
 				//创建标尺数值
 				for(var i=0; i<w; i+=1){
 					if(i % 60 === 0){

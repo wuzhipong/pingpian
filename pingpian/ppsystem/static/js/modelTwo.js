@@ -235,6 +235,8 @@ function pathImgName(path){
 
 //图片的拖拽移动
 oLi[0].onclick = function(event){
+	//还原右侧区域
+	recoverRight()
 	selectAreaCanvas.style.zIndex = -1;
 	recoverColorProcessing(event);
 	//清空放大事件
@@ -253,7 +255,9 @@ oLi[0].onclick = function(event){
 }
 //图片的放大与缩小
 oLi[1].onclick = function(event){
-	
+	//还原右侧区域
+	recoverRight()
+
 	oLi[5].flag = false;
 	drawRectangle(oLi[5]);
 	//清空放大事件
@@ -273,12 +277,18 @@ oLi[1].onclick = function(event){
 
 //图片的还原
 oLi[3].onclick = function(event){
+	//还原右侧区域
+	recoverRight()
+
 	recoverColorProcessing(event);
 	recover();
 }
 
 //颜色选取
 oLi[4].onclick = function(event){
+	//还原右侧区域
+	recoverRight()
+
 	recoverColorProcessing(event);
 	oLi[8].style.background = "rgba(100,100,100,0.75)";
 	//hideRuler();
@@ -299,6 +309,9 @@ oLi[4].onclick = function(event){
 
 //矩形绘制
 oLi[5].onclick = function(event){
+	//还原右侧区域
+	recoverRight()
+
 	selectAreaCanvas.style.zIndex = -1;
 	recoverColorProcessing(event);
 	oLi[6].flag = false;
@@ -321,6 +334,9 @@ oLi[5].onclick = function(event){
 
 //椭圆绘制
 oLi[6].onclick = function(event){
+	//还原右侧区域
+	recoverRight()
+
 	selectAreaCanvas.style.zIndex = -1;
 	recoverColorProcessing(event);
 	oLi[5].flag = false;
@@ -343,6 +359,9 @@ oLi[6].onclick = function(event){
 
 //放大效果
 oLi[7].onclick = function(event){
+	//还原右侧区域
+	recoverRight()
+
 	selectAreaCanvas.style.zIndex = -1;
 	//清空评定框和综合评定框
 	oLi[11].flag = false;
@@ -360,6 +379,9 @@ oLi[7].onclick = function(event){
 var oLiBtn = oLi[8].getElementsByTagName('button');
 //标尺测量
 oLiBtn[0].onclick = function(event){
+	//还原右侧区域
+	recoverRight()
+
 	selectAreaCanvas.style.zIndex = -1;
 	recoverColorProcessing(event);
 	//清空放大事件
@@ -381,6 +403,9 @@ oLiBtn[0].onclick = function(event){
 //画线测量
 oLiBtn[1].flag = true;
 oLiBtn[1].onclick = function(event){
+	//还原右侧区域
+	recoverRight()
+
 	selectAreaCanvas.style.zIndex = -1;
 	recoverColorProcessing(event);		
 	//清除矩形绘制
@@ -457,6 +482,7 @@ oLi[9].onclick = function(event){
 	//隐藏标尺
 	//hideRuler();
 }
+
 closeColorDeal.onclick = function(){
 	oLi[9].flag = true;
 	oLi[9].style.background = "rgba(100,100,100,0.75)";
@@ -583,9 +609,22 @@ function Transform(tmp,event){
 		if(index>2){
 			index = 2;
 		}
-		MTcontent.style.WebkitTransform="scale("+(index)+","+(index)+")";
-		mygod.style.WebkitTransform="scale("+(index)+","+(index)+")";
-		selectAreaCanvas.style.WebkitTransform = "scale("+(index)+","+(index)+")";
+		//判断是否为MS内核
+		if(browser.versions.trident){ 
+			MTcontent.style.MsTransform="scale("+(index)+","+(index)+")";
+			mygod.style.MsTransform="scale("+(index)+","+(index)+")";
+			selectAreaCanvas.style.MsTransform = "scale("+(index)+","+(index)+")";
+		}
+		//判断是否webKit内核
+		if(browser.versions.webKit){ 
+			MTcontent.style.WebkitTransform="scale("+(index)+","+(index)+")";
+			mygod.style.WebkitTransform="scale("+(index)+","+(index)+")";
+			selectAreaCanvas.style.WebkitTransform = "scale("+(index)+","+(index)+")";
+		}else{
+			MTcontent.style.transform="scale("+(index)+","+(index)+")";
+			mygod.style.transform="scale("+(index)+","+(index)+")";
+			selectAreaCanvas.style.transform = "scale("+(index)+","+(index)+")";
+		}
 	}else{
 		oLi[1].getElementsByTagName('img')[0].src = "/static/image/icon/narrow.ico";
 		index = index-0.02;
@@ -600,10 +639,25 @@ function Transform(tmp,event){
 			oLi[12].flag = true;
 			comprehensiveAssess(event,index,oLi[12]);
 		}
-		MTcontent.style.WebkitTransform="scale("+(index)+","+(index)+")";
-		mygod.style.WebkitTransform="scale("+(index)+","+(index)+")";
-		selectAreaCanvas.style.WebkitTransform = "scale("+(index)+","+(index)+")";
+
+		//判断是否为MS内核
+		if(browser.versions.trident){ 
+			MTcontent.style.MsTransform="scale("+(index)+","+(index)+")";
+			mygod.style.MsTransform="scale("+(index)+","+(index)+")";
+			selectAreaCanvas.style.MsTransform = "scale("+(index)+","+(index)+")";
+		}
+		//判断是否webKit内核
+		if(browser.versions.webKit){ 
+			MTcontent.style.WebkitTransform="scale("+(index)+","+(index)+")";
+			mygod.style.WebkitTransform="scale("+(index)+","+(index)+")";
+			selectAreaCanvas.style.WebkitTransform = "scale("+(index)+","+(index)+")";
+		}else{
+			MTcontent.style.transform="scale("+(index)+","+(index)+")";
+			mygod.style.transform="scale("+(index)+","+(index)+")";
+			selectAreaCanvas.style.transform = "scale("+(index)+","+(index)+")";
+		}
 	}
+	enlarge2(index);
 	painter.scale(index);
 	if($("#ScaleBox").length && $("#ScaleBox").css("display") === "block"){
 		$.pageRulerScale(index);
@@ -616,6 +670,12 @@ function recoverColorProcessing(event){
 	mygod.style.zIndex = "";
 	//drag.style.display = "none";
 	//selectArea(event,false);
+}
+
+//右侧区域还原
+function recoverRight(){
+	bigImg.style.display = "block";
+	imgColorProcess.style.display = "none";
 }
 
 //图片的还原	
@@ -644,6 +704,7 @@ function recover(event){
 	//清空图片移动事件
 	changeMove(false);
 	
+	enlarge2(index);
 	//清空放大事件
 	smallImg.onmouseover = null;
 	smallImg.onmousemove = null;
@@ -741,7 +802,85 @@ function drawEllipse(that){
 		that.flag = true;
 	}
 }
+//判断访问终端
+var browser={
+    versions:function(){
+        var u = navigator.userAgent, app = navigator.appVersion;
+        return {
+            trident: u.indexOf('Trident') > -1, //IE内核
+            presto: u.indexOf('Presto') > -1, //opera内核
+            webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+            gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1,//火狐内核
+            mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+            ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+            android: u.indexOf('Android') > -1 || u.indexOf('Adr') > -1, //android终端
+            iPhone: u.indexOf('iPhone') > -1 , //是否为iPhone或者QQHD浏览器
+            iPad: u.indexOf('iPad') > -1, //是否iPad
+            webApp: u.indexOf('Safari') == -1, //是否web应该程序，没有头部与底部
+            weixin: u.indexOf('MicroMessenger') > -1, //是否微信 （2015-01-22新增）
+            qq: u.match(/\sQQ/i) == " qq" //是否QQ
+        };
+    }(),
+    language:(navigator.browserLanguage || navigator.language).toLowerCase()
+}
+
 //图片的放大
+function enlarge2(index){
+	var index = index||1;
+	var scale = 3;   //放大系数
+	var w = parseFloat(MTcontent.width);
+	var h = parseFloat(MTcontent.height);
+	smallImg.style.height = h + "px";
+
+	imgB.style.width =  w*scale + 'px';
+	imgB.style.height = h*scale + 'px';
+
+	laywidth = parseFloat((bigImg.offsetWidth/scale));
+	layheight = parseFloat((280/scale));
+
+	document.body.onmousemove = function(event){
+		e = event||window.event;
+		var canvasRect = MTcontent.getBoundingClientRect();  //获取canvas元素相对于视窗的位置集合。
+		var canvasLeft = canvasRect.left;
+		var canvasTop = canvasRect.top;
+		var x = e.clientX - parseFloat(laywidth)/2 - canvasLeft;
+		var y = e.clientY - parseFloat(layheight)/2 - canvasTop; 
+		var x = x/index;
+		var y = y/index;
+
+		//console.log((e.clientX - canvasLeft) + "  " + (e.clientY - canvasTop) + "  " + laywidth + "  " + layheight);
+		if(x <= 0){            //左侧边界判断
+			x = 0;
+		}
+		if(y <= 0){            //顶部边界判断
+			y = 0;
+		}
+		if(x >= (w - laywidth)){  //右侧边界判断
+			x = w - laywidth;
+		}
+		if(y >= (h - layheight)){
+			y = h - layheight;
+		}
+
+		var ruler = document.getElementById("ruler");
+		var rulerRect = ruler.getBoundingClientRect();
+		var rulerLeft = rulerRect.left;
+		var rulerTop = rulerRect.top;
+
+		var borderLeft = e.clientX - rulerLeft;
+		var borderRight = e.clientX - rulerLeft - ruler.offsetWidth;
+		var borderTop = e.clientY - rulerTop;
+		var borderBottom = e.clientY - rulerTop - ruler.offsetHeight;
+
+		if(borderLeft > 0 && borderTop > 0 && borderRight < 0 && borderBottom < 0){
+			imgB.style.left = -x*scale + "px";    //图片默认位置为0 0左上角位置 需要反向才能两者相对显示
+			imgB.style.top = -y*scale + "px";
+		}
+	}
+}
+
+enlarge2();
+
 function enlarge(that){
 	if(that.flag){
 		recover();
@@ -1104,8 +1243,6 @@ function colorProcessMethod(){
 	var realStartY = startY*(mygod.naturalWidth/850);	
 	var realEndX = endX*(mygod.naturalWidth/850);
 	var realEndY = endY*(mygod.naturalWidth/850);
-
-	console.log(realStartX + " " + realEndX + " " + realStartY + " " +realEndY)
 
 	imgColorProcess.style.width = Math.abs(realEndX - realStartX) + "px";
 	imgColorProcess.style.height = Math.abs(realEndY - realStartY) + "px";
